@@ -109,7 +109,7 @@ def motivation_quote():
         prompt = f"""Give a short, warm, cosy 1-2 sentence motivational quote for a student named {name} 
         who is about to start a study session. Make it feel like encouragement from a kind friend, 
         not a generic poster. No hashtags, no emojis. Just warm words."""
-        response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+        response = client.models.generate_content(model="gemini-1.5-flash", contents=prompt)
         quote = response.text.strip()
     except Exception as e:
         print("Gemini error (quote):", e)
@@ -131,7 +131,7 @@ Think: flashcards, past paper questions, mind maps, teaching back a concept, wat
 
 Return ONLY a JSON array of 3 strings. No explanation, no markdown, no backticks.
 Example: ["Make flashcards for chapter 4 formulas", "Solve 5 past paper questions on motion", "Draw a mind map of Newton's laws"]"""
-        response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+        response = client.models.generate_content(model="gemini-1.5-flash", contents=prompt)
         text = response.text.strip().replace("```json", "").replace("```", "").strip()
         tasks = json.loads(text)
     except Exception as e:
@@ -248,11 +248,12 @@ def generate_match_explanation(user, partner):
         Student 1: studies in the {user.get('schedule')}, {user.get('intensity')} intensity, style: {user.get('study_style')}
         Student 2: studies in the {partner.get('schedule')}, {partner.get('intensity')} intensity, style: {partner.get('study_style')}
         No emojis. Sound like a caring friend making an introduction."""
-        response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+        response = client.models.generate_content(model="gemini-1.5-flash", contents=prompt)
         return response.text.strip()
     except Exception as e:
         print("Gemini error (match):", e)
         return f"You and {partner.get('name', 'your partner')} share the same study schedule and energy — you're going to keep each other on track!"
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
