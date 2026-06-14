@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Your Garden — Team Advantage{% endblock %}
+{% block content %}
+<div class="garden-wrap">
+  <div class="garden-header">
+    <h1>🌳 Your Shared Garden</h1>
+    <p>Every session you both complete makes something new bloom here.</p>
+  </div>
+
+  <div class="garden-stats-row">
+    <div class="garden-stat">
+      <span class="gs-icon">🌸</span>
+      <span class="gs-count" id="flower-count">{{ user.flowers + (partner.flowers if partner else 0) }}</span>
+      <span class="gs-label">Flowers</span>
+    </div>
+    <div class="garden-stat">
+      <span class="gs-icon">🍓</span>
+      <span class="gs-count" id="fruit-count">{{ user.fruits + (partner.fruits if partner else 0) }}</span>
+      <span class="gs-label">Fruits</span>
+    </div>
+    <div class="garden-stat">
+      <span class="gs-icon">🌳</span>
+      <span class="gs-count" id="tree-count">{{ user.trees + (partner.trees if partner else 0) }}</span>
+      <span class="gs-label">Trees</span>
+    </div>
+  </div>
+
+  <!-- Garden Canvas -->
+  <div class="garden-scene" id="garden-scene">
+    <div class="garden-sky">
+      <span class="cloud c1">☁️</span>
+      <span class="cloud c2">☁️</span>
+      <span class="sun-icon">☀️</span>
+    </div>
+    <div class="garden-ground">
+      <div class="plant-grid" id="plant-grid">
+        <!-- Plants rendered by JS -->
+      </div>
+    </div>
+    <div class="garden-path"></div>
+  </div>
+
+  <!-- Ownership -->
+  <div class="garden-ownership">
+    <div class="owner-col you-col">
+      <h3>{{ user.name }}'s contributions</h3>
+      <div class="mini-stats">
+        <span>🌸 {{ user.flowers }}</span>
+        <span>🍓 {{ user.fruits }}</span>
+        <span>🌳 {{ user.trees }}</span>
+      </div>
+    </div>
+    {% if partner %}
+    <div class="owner-col partner-col">
+      <h3>{{ partner.name }}'s contributions</h3>
+      <div class="mini-stats">
+        <span>🌸 {{ partner.flowers }}</span>
+        <span>🍓 {{ partner.fruits }}</span>
+        <span>🌳 {{ partner.trees }}</span>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="garden-hint">
+    <p>💡 Complete study sessions to grow more plants. Trees appear every 5 sessions, fruits every 3!</p>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+  const flowerCount = parseInt(document.getElementById('flower-count').textContent) || 0;
+  const fruitCount = parseInt(document.getElementById('fruit-count').textContent) || 0;
+  const treeCount = parseInt(document.getElementById('tree-count').textContent) || 0;
+</script>
+<script src="{{ url_for('static', filename='js/garden.js') }}"></script>
+{% endblock %}

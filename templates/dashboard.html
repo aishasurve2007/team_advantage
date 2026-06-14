@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Team Advantage{% endblock %}
+{% block content %}
+<div class="dashboard-wrap">
+  <!-- Greeting -->
+  <div class="dash-greeting">
+    <h1>Hey, {{ user.name }} 🌿</h1>
+    <p class="motivation-quote" id="motivation-quote">Loading your daily motivation...</p>
+  </div>
+
+  <div class="dash-grid">
+    <!-- Partner Card -->
+    <div class="dash-card partner-card">
+      <div class="card-label">Your Study Partner</div>
+      {% if partner %}
+      <div class="partner-info">
+        <div class="partner-avatar">{{ partner.name[0].upper() }}</div>
+        <div>
+          <h3>{{ partner.name }}</h3>
+          <p class="partner-meta">{{ partner.study_style|title }} learner · {{ partner.schedule|title }}</p>
+          <span class="online-badge {% if partner.online %}online{% else %}offline{% endif %}">
+            {{ "● Online" if partner.online else "○ Offline" }}
+          </span>
+        </div>
+      </div>
+      <div class="partner-xp">
+        <span>Partner XP: <strong>{{ partner.xp }}</strong></span>
+        <span>Sessions: <strong>{{ partner.sessions_done }}</strong></span>
+      </div>
+      <div class="match-explanation" id="match-explanation">
+        <p>✨ You're matched! Start a session and your garden grows together.</p>
+      </div>
+      {% else %}
+      <div class="no-partner">
+        <span class="no-partner-icon">🌱</span>
+        <p>Looking for your perfect match...</p>
+        <small>We'll notify you as soon as we find someone compatible!</small>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Stats -->
+    <div class="dash-card stats-card">
+      <div class="card-label">Your Progress</div>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-val">{{ user.xp }}</span>
+          <span class="stat-label">Total XP</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">{{ user.streak }}</span>
+          <span class="stat-label">Day Streak 🔥</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">{{ user.sessions_done }}</span>
+          <span class="stat-label">Sessions Done</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">{{ user.flowers + user.fruits + user.trees }}</span>
+          <span class="stat-label">Plants Grown 🌸</span>
+        </div>
+      </div>
+      <a href="/garden" class="btn btn-secondary" style="margin-top:16px;width:100%;text-align:center">View Garden 🌳</a>
+    </div>
+
+    <!-- Tasks -->
+    <div class="dash-card tasks-card">
+      <div class="card-label">Today's Tasks</div>
+      <ul class="task-list" id="task-list">
+        {% for task in user.tasks %}
+        <li class="task-item {% if task is mapping and task.done %}done{% endif %}" data-index="{{ i }}">
+          <button class="task-check" onclick="completeTask({{ i }})">
+            {% if task is mapping and task.done %}✅{% else %}○{% endif %}
+          </button>
+          <span class="task-text">{{ task.text if task is mapping else task }}</span>
+        </li>
+        {% endfor %}
+        {% if not user.tasks %}
+        <li class="empty-tasks">No tasks yet — add some from your profile!</li>
+        {% endif %}
+      </ul>
+      <p class="task-tip">✨ Completing a task grows a flower in your shared garden!</p>
+    </div>
+
+    <!-- Timer / Session -->
+    <div class="dash-card session-card">
+      <div class="card-label">Start a Session</div>
+      <div class="timer-display" id="timer-display">
+        <span id="timer-time">{{ user.timer_preference }}:00</span>
+      </div>
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="start-btn" onclick="startTimer()">▶ Start Session</button>
+        <button class="btn btn-ghost" id="reset-btn" onclick="resetTimer()" style="display:none">↺ Reset</button>
+      </div>
+      <div class="timer-presets">
+        <span class="preset-label">Timer:</span>
+        <button class="preset-btn {% if user.timer_preference == 15 %}active{% endif %}" onclick="setTimer(15)">15m</button>
+        <button class="preset-btn {% if user.timer_preference == 25 %}active{% endif %}" onclick="setTimer(25)">25m</button>
+        <button class="preset-btn {% if user.timer_preference == 45 %}active{% endif %}" onclick="setTimer(45)">45m</button>
+        <button class="preset-btn {% if user.timer_preference == 60 %}active{% endif %}" onclick="setTimer(60)">60m</button>
+      </div>
+      <div id="session-complete" class="session-complete hidden">
+        <p>🎉 Session complete! You both earned XP!</p>
+        <div id="reward-reveal"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Tell Us About You — Team Advantage{% endblock %}
+{% block content %}
+<div class="questionnaire-wrap">
+  <div class="q-header">
+    <p class="q-step-label">Step <span id="step-num">1</span> of 4</p>
+    <div class="q-progress-bar"><div class="q-progress-fill" id="progress-fill"></div></div>
+    <h1 class="q-title" id="q-title">Let's get to know you 🌿</h1>
+    <p class="q-subtitle" id="q-subtitle">We'll use this to find your perfect study partner.</p>
+  </div>
+
+  <!-- Step 1: Basic Info -->
+  <div class="q-step active" id="step-1">
+    <div class="q-field">
+      <label class="q-label">What's your name?</label>
+      <input type="text" class="q-input" id="input-name" placeholder="Your name..." />
+    </div>
+    <div class="q-field">
+      <label class="q-label">What are you studying / working towards?</label>
+      <input type="text" class="q-input" id="input-goals" placeholder="e.g. JEE prep, web dev, college exams..." />
+    </div>
+    <div class="q-field">
+      <label class="q-label">Your subjects (pick all that apply)</label>
+      <div class="pill-group" id="subjects-group">
+        <button class="pill" data-val="Math">📐 Math</button>
+        <button class="pill" data-val="Science">🔬 Science</button>
+        <button class="pill" data-val="Coding">💻 Coding</button>
+        <button class="pill" data-val="Literature">📚 Literature</button>
+        <button class="pill" data-val="History">🏛️ History</button>
+        <button class="pill" data-val="Languages">🌍 Languages</button>
+        <button class="pill" data-val="Art">🎨 Art</button>
+        <button class="pill" data-val="Business">📊 Business</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Schedule & Style -->
+  <div class="q-step" id="step-2">
+    <div class="q-field">
+      <label class="q-label">When do you usually study?</label>
+      <div class="card-group" id="schedule-group">
+        <button class="q-card" data-group="schedule" data-val="morning">🌅<span>Morning</span><small>6am–12pm</small></button>
+        <button class="q-card" data-group="schedule" data-val="afternoon">☀️<span>Afternoon</span><small>12pm–5pm</small></button>
+        <button class="q-card" data-group="schedule" data-val="evening">🌇<span>Evening</span><small>5pm–9pm</small></button>
+        <button class="q-card" data-group="schedule" data-val="night">🌙<span>Night owl</span><small>9pm onwards</small></button>
+      </div>
+    </div>
+    <div class="q-field">
+      <label class="q-label">How do you learn best?</label>
+      <div class="card-group" id="style-group">
+        <button class="q-card" data-group="study_style" data-val="visual">👁️<span>Visual</span><small>diagrams, videos</small></button>
+        <button class="q-card" data-group="study_style" data-val="reading">📖<span>Reading</span><small>notes, books</small></button>
+        <button class="q-card" data-group="study_style" data-val="kinesthetic">✏️<span>Practice</span><small>problems, doing</small></button>
+        <button class="q-card" data-group="study_style" data-val="auditory">🎧<span>Auditory</span><small>lectures, podcasts</small></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Intensity & Timer -->
+  <div class="q-step" id="step-3">
+    <div class="q-field">
+      <label class="q-label">Study intensity — how hard do you push?</label>
+      <div class="card-group" id="intensity-group">
+        <button class="q-card" data-group="intensity" data-val="chill">🍵<span>Chill</span><small>relaxed, no rush</small></button>
+        <button class="q-card" data-group="intensity" data-val="moderate">⚡<span>Moderate</span><small>focused & steady</small></button>
+        <button class="q-card" data-group="intensity" data-val="intense">🔥<span>Intense</span><small>deep work mode</small></button>
+      </div>
+    </div>
+    <div class="q-field">
+      <label class="q-label">Preferred session timer</label>
+      <div class="pill-group" id="timer-group">
+        <button class="pill" data-val="15" data-group="timer">15 min</button>
+        <button class="pill" data-val="25" data-group="timer">25 min ✨</button>
+        <button class="pill" data-val="45" data-group="timer">45 min</button>
+        <button class="pill" data-val="60" data-group="timer">60 min</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Tasks -->
+  <div class="q-step" id="step-4">
+    <div class="q-field">
+      <label class="q-label">Add up to 3 tasks for today (or let AI suggest them)</label>
+      <div id="task-inputs">
+        <div class="task-row"><input type="text" class="q-input task-input" placeholder="Task 1..." /></div>
+        <div class="task-row"><input type="text" class="q-input task-input" placeholder="Task 2..." /></div>
+        <div class="task-row"><input type="text" class="q-input task-input" placeholder="Task 3..." /></div>
+      </div>
+      <button class="btn btn-secondary" id="suggest-tasks-btn" style="margin-top:12px">✨ Let AI suggest tasks</button>
+      <div id="ai-task-suggestions" class="ai-suggestions hidden"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="q-nav">
+    <button class="btn btn-ghost" id="prev-btn" style="display:none">← Back</button>
+    <button class="btn btn-primary" id="next-btn">Next →</button>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/questionnaire.js') }}"></script>
+{% endblock %}
